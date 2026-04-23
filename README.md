@@ -11,7 +11,7 @@ Now with optional Teto speaking in your terminal via ffplay! Just SV2, for now.
 ## **Dependencies**
 
 ### install.sh and tetosong
-fortune/fortune-mod or misfortune 
+fortune/fortune-mod 
 ffmpeg -optional for speaking Teto
 
 
