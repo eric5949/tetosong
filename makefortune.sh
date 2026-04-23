@@ -47,7 +47,6 @@ while true; do
           echo "$url"
           echo ""
           echo "▼・ᴗ・▼"
-          echo ""
           echo "%"
       done >> tetofortunes
       if [ "$START" -ge "$MAX" ]; then

@@ -1,0 +1,26 @@
+#!/usr/bin/bash
+# check if the config file exists, if not download it
+if [ ! -f ~/.local/share/tetosong/tetosong.config ]; then
+    echo "Config file not found, downloading default..."
+    curl -sLo ~/.local/share/tetosong/tetosong.config https://github.com/eric5949/TetoSongOfTheDay/raw/a52c877bfb1508f0223469e3b9e86c65ee6915ae/tetosong.config
+fi
+# check if the user wants to play audio
+AUDIO="$(. ~/.local/share/tetosong/tetosong.config; echo $AUDIO)"
+
+# check which fortune command is installed if any and then run it
+if ! [ -x "$(command -v fortune)" ]; then
+  if ! [ -x "$(command -v misfortune)" ]; then
+      echo 'No fortune commmand is installed, exiting!'
+      exit 1
+  else
+      if [ "$AUDIO" = "YES" ]; then
+          nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/sv2SOTD.wav 2>/dev/null >/dev/null &
+      fi
+    misfortune ~/.local/share/tetosong
+  fi
+else
+    if [ "$AUDIO" = "YES" ]; then
+        nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/sv2SOTD.wav 2>/dev/null >/dev/null &
+    fi
+    fortune ~/.local/share/tetosong
+fi

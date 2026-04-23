@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+# check which fortune command is installed if any.
 if ! [ -x "$(command -v fortune)" ]; then
   echo 'fortune is not installed, checking for misfortune'm
   if ! [ -x "$(command -v misfortune)" ]; then
@@ -10,24 +11,26 @@ if ! [ -x "$(command -v fortune)" ]; then
 else
     echo 'fortune found'
 fi
-echo "Downloading custom fortunes..."
+
+# download custom fortunes and config file
+echo "Downloading custom fortunes and config file..."
 mkdir -p ~/.local/share/tetosong
-curl -s -L -o ~/.local/share/tetosong/tetofortunes https://github.com/eric5949/TetoSongOfTheDay/raw/a52c877bfb1508f0223469e3b9e86c65ee6915ae/tetofortunes
-curl -s -L -o ~/.local/share/tetosong/tetofortunes.dat https://github.com/eric5949/TetoSongOfTheDay/raw/a52c877bfb1508f0223469e3b9e86c65ee6915ae/tetofortunes.dat
+curl -sLo ~/.local/share/tetosong/tetofortunes https://github.com/eric5949/TetoSongOfTheDay/raw/a52c877bfb1508f0223469e3b9e86c65ee6915ae/tetofortunes
+curl -sLo ~/.local/share/tetosong/tetofortunes.dat https://github.com/eric5949/TetoSongOfTheDay/raw/a52c877bfb1508f0223469e3b9e86c65ee6915ae/tetofortunes.dat
+curl -sLo ~/.local/share/tetosong/tetosong.config https://github.com/eric5949/TetoSongOfTheDay/raw/a52c877bfb1508f0223469e3b9e86c65ee6915ae/tetosong.config
+curl -sLo ~/.local/share/tetosong/sv2SOTD.wav https://github.com/eric5949/TetoSongOfTheDay/raw/a52c877bfb1508f0223469e3b9e86c65ee6915ae/sv2SOTD.wav
+
+# prompt the user to hear Teto in their terminal
+read -p "Do you want to hear Teto in your terminal? (y/n) " yn
+case $yn in
+    [Yy]* ) sed -i 's|^AUDIO=.*|AUDIO="YES"|' ~/.local/share/tetosong/tetosong.config ;;
+    [Nn]* ) sed -i 's|^AUDIO=.*|AUDIO="NO"|' ~/.local/share/tetosong/tetosong.config ;;
+    * ) echo "Please answer yes or no.";;
+esac
+
+# write tetosong to ~/.local/bin and tell the user how to use it.
 echo "writing tetosong to ~/.local/bin"
 mkdir -p ~/.local/bin
-cat > ~/.local/bin/tetosong <<EOF
-#!/bin/bash
-if ! [ -x "$(command -v fortune)" ]; then
-  if ! [ -x "$(command -v misfortune)" ]; then
-      echo 'No fortune commmand is installed, exiting!'
-      exit 1
-  else
-    misfortune ~/.local/share/tetosong/tetofortunes
-  fi
-else
-    fortune ~/.local/share/tetosong/tetofortunes
-fi
-EOF
+curl -sLo ~/.local/bin/tetosong https://github.com/eric5949/TetoSongOfTheDay/raw/a52c877bfb1508f0223469e3b9e86c65ee6915ae/tetosong
 chmod +x ~/.local/bin/tetosong
-echo "you can get your Teto Song Of the Day by typing in tetosong or adding it to your bashrc :)"
+echo "Make sure ~/.local/bin is in your PATH and you can get your Teto Song Of the Day by typing in tetosong or adding it to your bashrc :)"
