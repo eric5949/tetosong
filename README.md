@@ -1,10 +1,9 @@
 # **Kasane Teto in Your Terminal!**
 ## **Find songs nobody knows exist!** 
-A small wrapper and custom list for fortune/misfortune that picks a random Teto song of the day from any of over 16,000 original, finished songs on VocaDB.
+A small wrapper and custom list for fortune/misfortune that picks a random Teto song of the day from any of almost 28,000 original, finished songs with videos on VocaDB.
 
-Now with optional Teto speaking in your terminal via ffplay! Just SV2, for now.
+Now with optional Teto speaking in your terminal via ffplay! Just SV2, for now ;)
 
-...despite the whole list being Utau songs at the moment (ᵕ•_•)
 
 <img src="tetosong.png" width="500">
 

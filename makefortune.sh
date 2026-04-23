@@ -1,9 +1,9 @@
 #!/usr/bin/bash
-ARTIST=116 # 116 is Kasane Teto
+ARTIST=140308 # 116 is Kasane Teto
 CHILDREN="true" # If we want child voicebanks, we do so we can get all songs from utau, sv, and sv2
-START=0 # Start at the beginning of the recordset. if i wanted to make the file in chunks to use the api less i would use this and max to get the songs in chunks.  They say dont use it "thousands of times a day", getting every teto song is 163 times. I think I'm ok.
+START=0 # Start at the beginning of the recordset. if i wanted to make the file in chunks to use the api less i would use this and max to get the songs in chunks.  They say dont use it "thousands of times a day", getting every teto song is 280 times. I think I'm ok.  maybe.
 RESULTS=100 # Max results. Limit is 100.
-MAX=20000 # when to stop, there's as of 4-20-26 16327 songs featuring Kasane Teto in the recordset i have selected.
+MAX=30000 # when to stop, there's as of 4-23-26 over 28,000 songs featuring Kasane Teto in the recordset i have selected.
 if [ ! -f var.json ]; then # var.json has our latest date, we use it to know where to stop going back, past it the songs already exist in the fortune file.
     echo '{"lastDate": "2000-04-21T00:00:00Z"}' > var.json #  if it doesn't exist, we create it with a default date back in 2000.
 fi
