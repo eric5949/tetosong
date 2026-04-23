@@ -12,11 +12,13 @@ Now with optional Teto speaking in your terminal via ffplay! Just SV2, for now.
 
 ### install.sh and tetosong
 fortune/fortune-mod 
+
 ffmpeg -optional for speaking Teto
 
 
 ### makefortune.sh
 fortune/fortune-mod (for strfile)
+
 jq
 
 ## *Install and Run*
