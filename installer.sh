@@ -15,10 +15,10 @@ fi
 # download custom fortunes and config file
 echo "Downloading custom fortunes and config file..."
 mkdir -p ~/.local/share/tetosong
-curl -sLo ~/.local/share/tetosong/tetofortunes https://github.com/eric5949/TetoSongOfTheDay/raw/a52c877bfb1508f0223469e3b9e86c65ee6915ae/tetofortunes
-curl -sLo ~/.local/share/tetosong/tetofortunes.dat https://github.com/eric5949/TetoSongOfTheDay/raw/a52c877bfb1508f0223469e3b9e86c65ee6915ae/tetofortunes.dat
-curl -sLo ~/.local/share/tetosong/tetosong.config https://github.com/eric5949/TetoSongOfTheDay/raw/a52c877bfb1508f0223469e3b9e86c65ee6915ae/tetosong.config
-curl -sLo ~/.local/share/tetosong/sv2SOTD.wav https://github.com/eric5949/TetoSongOfTheDay/raw/a52c877bfb1508f0223469e3b9e86c65ee6915ae/sv2SOTD.wav
+curl -sLo ~/.local/share/tetosong/tetofortunes https://raw.githubusercontent.com/eric5949/TetoSongOfTheDay/refs/heads/main/tetofortunes
+curl -sLo ~/.local/share/tetosong/tetofortunes.dat https://raw.githubusercontent.com/eric5949/TetoSongOfTheDay/refs/heads/main/tetofortunes.dat
+curl -sLo ~/.local/share/tetosong/tetosong.config https://raw.githubusercontent.com/eric5949/TetoSongOfTheDay/refs/heads/main/tetosong.config
+curl -sLo ~/.local/share/tetosong/sv2SOTD.wav https://raw.githubusercontent.com/eric5949/TetoSongOfTheDay/refs/heads/main/sv2SOTD.wav
 
 # prompt the user to hear Teto in their terminal
 read -p "Do you want to hear Teto in your terminal? (y/n) " yn
@@ -31,6 +31,6 @@ esac
 # write tetosong to ~/.local/bin and tell the user how to use it.
 echo "writing tetosong to ~/.local/bin"
 mkdir -p ~/.local/bin
-curl -sLo ~/.local/bin/tetosong https://github.com/eric5949/TetoSongOfTheDay/raw/a52c877bfb1508f0223469e3b9e86c65ee6915ae/tetosong
+curl -sLo ~/.local/bin/tetosong https://raw.githubusercontent.com/eric5949/TetoSongOfTheDay/refs/heads/main/tetosong
 chmod +x ~/.local/bin/tetosong
 echo "Make sure ~/.local/bin is in your PATH and you can get your Teto Song Of the Day by typing in tetosong or adding it to your bashrc :)"
