@@ -34,5 +34,9 @@ You can get your Teto song of the day by running:
 ```bash
 tetosong
 ```
+You can update the script and fortunes from github using: 
+```bash
+tetosong -u
+```
 
 Your original fortune command will remain untouched, tetosong just tells it to use a custom directory.
