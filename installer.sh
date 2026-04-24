@@ -14,20 +14,41 @@ fi
 
 # download custom fortunes and config file
 echo "Downloading custom fortunes and config file..."
-mkdir -p ~/.local/share/tetosong
-curl -sLo ~/.local/share/tetosong/tetofortunes https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetofortunes
-curl -sLo ~/.local/share/tetosong/tetofortunes.dat https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetofortunes.dat
-curl -sLo ~/.local/share/tetosong/tetosong.config https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetosong.config
-curl -sLo ~/.local/share/tetosong/sv2SOTD.wav https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/sv2SOTD.wav
+# download the config file and prompt the user for options.
 
-# prompt the user to hear Teto in their terminal
+curl -sLo ~/.local/share/tetosong/tetosong.config https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetosong.config
 read -p "Do you want to hear Teto in your terminal? (y/n) " yn
 case $yn in
     [Yy]* ) sed -i 's|^AUDIO=.*|AUDIO="YES"|' ~/.local/share/tetosong/tetosong.config ;;
     [Nn]* ) sed -i 's|^AUDIO=.*|AUDIO="NO"|' ~/.local/share/tetosong/tetosong.config ;;
     * ) echo "Please answer yes or no.";;
 esac
+read -p "Do you want to enable automatic updates? (y/n) " yn
+case $yn in
+    [Yy]* ) sed -i 's|^AUTOUPDATE=.*|AUTOUPDATE="YES"|' ~/.local/share/tetosong/tetosong.config ;;
+    [Nn]* ) sed -i 's|^AUTOUPDATE=.*|AUTOUPDATE="NO"|' ~/.local/share/tetosong/tetosong.config ;;
+    * ) echo "Please answer yes or no.";;
+esac
+mkdir -p ~/.local/share/tetosong
+curl -sLo ~/.local/share/tetosong/tetofortunes https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetofortunes
+curl -sLo ~/.local/share/tetosong/tetofortunes.dat https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetofortunes.dat
+curl -sLo ~/.local/share/tetosong/sv2SOTD.wav https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/sv2SOTD.wav
 
+# set up autoupdater
+# i use systemd, so i use systemd timers.  I'll figure out something for non-systemd users later.
+AUTOUPDATE="$(. ~/.local/share/tetosong/tetosong.config; echo $AUTOUPDATE)"
+if [ "$AUTOUPDATE" = "YES" ]; then
+    # write and enable systemd service file and timer user services
+    echo "Autoupdater enabled, updating service..."
+    mkdir -p ~/.config/systemd/user
+    curl -sLo ~/.config/systemd/user/tetosong.service https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/autoupdater/tetosong.service
+    curl -sLo ~/.config/systemd/user/tetosong.timer https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/autoupdater/tetosong.timer
+    systemctl --user daemon-reload
+    systemctl --user enable tetosong.timer
+    systemctl --user start tetosong.timer
+else
+    echo "Auto-Updater disabled, skipping service update."
+fi
 # write tetosong to ~/.local/bin and tell the user how to use it.
 echo "writing tetosong to ~/.local/bin"
 mkdir -p ~/.local/bin

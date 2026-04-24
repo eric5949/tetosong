@@ -1,0 +1,7 @@
+[Unit]
+Description=tetosong updater
+Wants=tetosong.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -c "curl -s file:///home/eric/GitHub/TetoSongOfTheDay/autoupdater/updater.sh | bash"

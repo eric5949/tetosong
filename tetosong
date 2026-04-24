@@ -3,8 +3,8 @@
 while [[ $# -gt 0 ]]; do
     case $1 in
         -u|--update)
-            echo "Updating tetosong..."
-            bash <(curl -s https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/installer.sh)
+            echo "Downloading tetosong updater..."
+            bash <(curl -s https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/autoupdater/updater.sh)
             shift
             exit 0
             ;;
