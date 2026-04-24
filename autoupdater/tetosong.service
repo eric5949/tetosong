@@ -4,4 +4,4 @@ Wants=tetosong.timer
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/bash -c "curl -s file:///home/eric/GitHub/TetoSongOfTheDay/autoupdater/updater.sh | bash"
+ExecStart=/usr/bin/bash -c "curl -s https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/eggs/autoupdater/updater.sh | bash"

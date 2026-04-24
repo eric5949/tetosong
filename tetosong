@@ -4,7 +4,7 @@ while [[ $# -gt 0 ]]; do
     case $1 in
         -u|--update)
             echo "Downloading tetosong updater..."
-            bash <(curl -s https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/autoupdater/updater.sh)
+            bash <(curl -s https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/eggs/autoupdater/updater.sh)
             shift
             exit 0
             ;;
@@ -26,7 +26,7 @@ done
 # check if the config file exists, if not download it
 if [ ! -f ~/.local/share/tetosong/tetosong.config ]; then
     echo "Config file not found, downloading default..."
-    curl -sLo ~/.local/share/tetosong/tetosong.config https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetosong.config
+    curl -sLo ~/.local/share/tetosong/tetosong.config https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/eggs/tetosong.config
 fi
 # check if the user wants to play audio
 AUDIO="$(. ~/.local/share/tetosong/tetosong.config; echo $AUDIO)"
@@ -40,11 +40,11 @@ if ! [ -x "$(command -v fortune)" ]; then
       if [ "$AUDIO" = "YES" ]; then
           nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/sv2SOTD.wav 2>/dev/null >/dev/null &
       fi
-    misfortune ~/.local/share/tetosong/* # fortune doesnt care if you give it a directory, apparently misfortune does. watch this be a problem when i go to add SynthV Teto in a separate file.
+    misfortune ~/.local/share/tetosong/fortunes/* # fortune doesnt care if you give it a directory, apparently misfortune does. watch this be a problem when i go to add easter eggs in a separate file...
   fi
 else
     if [ "$AUDIO" = "YES" ]; then
         nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/sv2SOTD.wav 2>/dev/null >/dev/null &
     fi
-    fortune ~/.local/share/tetosong
+    fortune ~/.local/share/tetosong/fortunes/
 fi

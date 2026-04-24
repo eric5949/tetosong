@@ -24,7 +24,7 @@ jq
 Install the tetosong command with:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/installer.sh)
+bash <(curl -s https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/eggs/installer.sh)
 ```
 once installed, make sure you add ~/.local/bin to your $PATH if it is not already there.
 
