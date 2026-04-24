@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 ARTIST=140308 # 116 is Kasane Teto
 CHILDREN="true" # If we want child voicebanks, we do so we can get all songs from utau, sv, and sv2
 START=0 # Start at the beginning of the recordset. if i wanted to make the file in chunks to use the api less i would use this and max to get the songs in chunks.  They say dont use it "thousands of times a day", getting every teto song is 280 times. I think I'm ok.  maybe.

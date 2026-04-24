@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # check which fortune command is installed if any.
 if ! [ -x "$(command -v fortune)" ]; then
   echo 'fortune is not installed, checking for misfortune'm

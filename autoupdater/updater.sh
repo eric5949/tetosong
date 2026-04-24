@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # download custom fortunes and config file
 echo "Updating tetosong..."
 

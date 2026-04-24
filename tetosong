@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # argument handling
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -40,11 +40,11 @@ if ! [ -x "$(command -v fortune)" ]; then
       if [ "$AUDIO" = "YES" ]; then
           nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/sv2SOTD.wav 2>/dev/null >/dev/null &
       fi
-    misfortune ~/.local/share/tetosong/fortunes/tetosotd/* # fortune doesnt care if you give it a directory, apparently misfortune does. watch this be a problem when i go to add easter eggs in a separate file...
+    misfortune ~/.local/share/tetosong/fortunes/**/*/* # fortune doesnt care if you give it a directory, apparently misfortune does. watch this be a problem when i go to add easter eggs in a separate file...
   fi
 else
     if [ "$AUDIO" = "YES" ]; then
         nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/sv2SOTD.wav 2>/dev/null >/dev/null &
     fi
-    fortune ~/.local/share/tetosong/fortunes/tetosotd/
+    fortune ~/.local/share/tetosong/fortunes/**/*/
 fi
