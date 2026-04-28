@@ -1,4 +1,6 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
+cd $HOME
+yes | rm -r tetosong
 git clone git@github.com:eric5949/tetosong.git
 cd tetosong
 ARTIST=140308 # 116 is Kasane Teto
@@ -50,7 +52,7 @@ while true; do
           echo ""
           echo "▼・ᴗ・▼"
           echo "%"
-      done >> tetofortunes
+      done >> fortunes/tetosotd/tetofortunes
       if [ "$START" -ge "$MAX" ]; then
         echo "Reached max results. Stopping."
         break
@@ -59,7 +61,8 @@ while true; do
     fi
 done
 # create the fortune database from tetofortunes
-rm tetofortunes.dat # delete the old database if it extists.
-strfile -c % tetofortunes tetofortunes.dat
+rm fortunes/tetosotd/tetofortunes.dat # delete the old database if it extists.
+strfile -c % fortunes/tetosotd/tetofortunes fortunes/tetosotd/tetofortunes.dat
+git add fortunes/tetosotd/tetofortunes fortunes/tetosotd/tetofortunes.dat var.json
 git commit -m "Update fortune files"
 git push -u origin main
