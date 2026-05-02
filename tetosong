@@ -1,10 +1,15 @@
 #!/usr/bin/bash
+#
+#   Updated 5-1-26 to use new vocafortune script and not require fortune/misfortune.
+#
+#
+
 # argument handling
 while [[ $# -gt 0 ]]; do
     case $1 in
         	-u|--update)
         		echo "Downloading tetosong updater..."
-        		bash <(curl -s https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/autoupdater/updater.sh)
+        		bash <(curl -s https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/autoupdater/updater.sh)
         		shift
         		exit 0
         		;;
@@ -26,46 +31,22 @@ done
 # check if the config file exists, if not download it
 if [ ! -f ~/.local/share/tetosong/tetosong.config ]; then
 	echo "Config file not found, downloading default..."
-	curl -sLo ~/.local/share/tetosong/tetosong.config https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetosong.config
+	curl -sLo ~/.local/share/tetosong/tetosong.config https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/tetosong.config
 fi
 # check if the user wants to play audio
 AUDIO="$(. ~/.local/share/tetosong/tetosong.config; echo $AUDIO)"
 
-# check which fortune command is installed if any and then run it
-if ! [ -x "$(command -v fortune)" ]; then
-  if ! [ -x "$(command -v misfortune)" ]; then
-      echo 'No fortune commmand is installed, exiting!'
-      exit 1
-  else
-      misfortune ~/.local/share/tetosong/fortunes/*/* >> /tmp/fortune # fortune and misfortune handle directories differently
-      if [ "$AUDIO" = "YES" ]; then # i guess i could foregoe checking and just run the audio either way since i dont download it unless the user enables it, but i want them to be ableto turn it off if they choose to
-          if grep -q "SV2" /tmp/fortune; then
-              nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/sv2SOTD.wav 2>/dev/null >/dev/null &
-          elif grep -q "SV" /tmp/fortune; then
-              nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/svSOTD.wav 2>/dev/null >/dev/null &
-          elif grep -q "重音テト" /tmp/fortune; then
-              nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/utSOTD.wav 2>/dev/null >/dev/null &
-          else
-              nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/sv2SOTD.wav 2>/dev/null >/dev/null &
-          fi
-      fi
-      cat /tmp/fortune
-    rm /tmp/fortune
-  fi
-else
-    fortune ~/.local/share/tetosong/fortunes/* >> /tmp/fortune
-    if [ "$AUDIO" = "YES" ]; then
-        if grep -q "SV2" /tmp/fortune; then
-            nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/sv2SOTD.wav 2>/dev/null >/dev/null &
-        elif grep -q "SV" /tmp/fortune; then
-            nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/svSOTD.wav 2>/dev/null >/dev/null &
-        elif grep -q "重音テト" /tmp/fortune; then
-            nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/utSOTD.wav 2>/dev/null >/dev/null &
-        else
-            nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/sv2SOTD.wav 2>/dev/null >/dev/null &
-        fi
+vocafortune >> /tmp/fortune
+if [ "$AUDIO" = "YES" ]; then
+    if grep -q "SV2" /tmp/fortune; then
+        nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/sv2SOTD.wav 2>/dev/null >/dev/null &
+    elif grep -q "SV" /tmp/fortune; then
+        nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/svSOTD.wav 2>/dev/null >/dev/null &
+    elif grep -q "重音テト" /tmp/fortune; then
+        nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/utSOTD.wav 2>/dev/null >/dev/null &
+    else
+        nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/sv2SOTD.wav 2>/dev/null >/dev/null &
     fi
-
+fi
     cat /tmp/fortune
     rm /tmp/fortune
-fi
