@@ -1,14 +1,19 @@
 #!/usr/bin/bash
+#
+#  Updated 5-1-2026 to use new vocafortunes script instead of fortune/misfortune
+#
+#
 # download custom fortunes and config file
 echo "Updating tetosong..."
 # check if the config file exists, if not download it and prompt the user for options.
+
+#### remove files from old version
+rm -rf ~/.local/share/tetosong/fortunes/
+# add new files
 mkdir -p ~/.local/share/tetosong
-
-
-mkdir -p ~/.local/share/tetosong/fortunes
-mkdir -p ~/.local/share/tetosong/fortunes/tetosotd
-curl -sLo ~/.local/share/tetosong/fortunes/tetosotd/tetofortunes https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/fortunes/tetosotd/tetofortunes
-curl -sLo ~/.local/sharetetosong/fortunes/tetosotd/tetofortunes.dat https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/fortunes/tetosotd/tetofortunes.dat
+mkdir -p ~/.local/share/tetosong/vocafortunes
+mkdir -p ~/.local/share/tetosong/vocafortunes/vocadb
+curl -sLo ~/.local/share/tetosong/vocafortunes/vocadb/140308 https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortunes/vocadb/140308
 AUDIO="$(. ~/.local/share/tetosong/tetosong.config; echo $AUDIO)"
 if [ "$AUDIO" = "YES" ]; then
     curl -sLo ~/.local/share/tetosong/SOTD.zip https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/audio/teto/SOTD.zip
@@ -37,5 +42,7 @@ fi
 echo "writing tetosong to ~/.local/bin"
 mkdir -p ~/.local/bin
 curl -sLo ~/.local/bin/tetosong https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetosong
+curl -sLo ~/.local/bin/tetosong https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortune
 chmod +x ~/.local/bin/tetosong
-echo "Update complete"
+chmod +x ~/.local/bin/vocafortune
+echo "Make sure ~/.local/bin is in your PATH and you can get your Teto Song Of the Day by typing in tetosong or adding it to your bashrc :)"

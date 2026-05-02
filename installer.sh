@@ -1,16 +1,9 @@
 #!/usr/bin/env bash
-# check which fortune command is installed if any.
-if ! [ -x "$(command -v fortune)" ]; then
-  echo 'fortune is not installed, checking for misfortune'm
-  if ! [ -x "$(command -v misfortune)" ]; then
-      echo 'neither program is installed, exiting'
-      exit 1
-    else
-      echo 'misfortune found'
-  fi
-else
-    echo 'fortune found'
-fi
+#
+#  Updated 5-1-2026 to use new vocafortunes script instead of fortune/misfortune
+#
+#
+#
 
 # download custom fortunes and config file
 echo "Downloading custom fortunes and config file..."
@@ -38,10 +31,10 @@ case $yn in
     * ) echo "Please answer yes or no.";;
 esac
 
-mkdir -p ~/.local/share/tetosong/fortunes
-mkdir -p ~/.local/share/tetosong/fortunes/tetosotd
-curl -sLo ~/.local/share/tetosong/fortunes/tetosotd/tetofortunes https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/fortunes/tetosotd/tetofortunes
-curl -sLo ~/.local/share/tetosong/fortunes/tetosotd/tetofortunes.dat https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/fortunes/tetosotd/tetofortunes.dat
+mkdir -p ~/.local/share/tetosong/vocafortunes
+mkdir -p ~/.local/share/tetosong/vocafortunes/vocadb
+curl -sLo ~/.local/share/tetosong/vocafortunes/vocadb/140308 https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortunes/vocadb/140308
+
 
 # set up autoupdater
 # i use systemd, so i use systemd timers.  I'll figure out something for non-systemd users later.
@@ -62,5 +55,7 @@ fi
 echo "writing tetosong to ~/.local/bin"
 mkdir -p ~/.local/bin
 curl -sLo ~/.local/bin/tetosong https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetosong
+curl -sLo ~/.local/bin/vocafortune https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortune
 chmod +x ~/.local/bin/tetosong
+chmod +x ~/.local/bin/vocafortune
 echo "Make sure ~/.local/bin is in your PATH and you can get your Teto Song Of the Day by typing in tetosong or adding it to your bashrc :)"

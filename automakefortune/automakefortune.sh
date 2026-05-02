@@ -8,10 +8,10 @@ CHILDREN="true" # If we want child voicebanks, we do so we can get all songs fro
 START=0 # Start at the beginning of the recordset. if i wanted to make the file in chunks to use the api less i would use this and max to get the songs in chunks.  They say dont use it "thousands of times a day", getting every teto song is 280 times. I think I'm ok.  maybe.
 RESULTS=100 # Max results. Limit is 100.
 MAX=30000 # when to stop, there's as of 4-23-26 over 28,000 songs featuring Kasane Teto in the recordset i have selected.
-if [ ! -f var.json ]; then # var.json has our latest date, we use it to know where to stop going back, past it the songs already exist in the fortune file.
-    echo '{"lastDate": "2000-04-21T00:00:00Z"}' > var.json #  if it doesn't exist, we create it with a default date back in 2000.
+if [ ! -f dates/${ARTIST}var.json ]; then # var.json has our latest date, we use it to know where to stop going back, past it the songs already exist in the fortune file.
+    echo '{"lastDate": "2000-04-21T00:00:00Z"}' > dates/${ARTIST}var.json #  if it doesn't exist, we create it with a default date back in 2000.
 fi
-PREVDATE=$(jq -r '.lastDate' var.json)
+PREVDATE=$(jq -r '.lastDate' dates/${ARTIST}var.json)
 AFTERDATE=$(date -u -d "$PREVDATE + 1 Second" +"%Y-%m-%dT%H:%M:%SZ")
 echo "Result: $AFTERDATE"
 #rm tetofortunes var.json tetofortunes.dat # during testing we will remove everything, or if we want to regenerate the fortune file from scratch.
@@ -27,9 +27,9 @@ if [ "$SONGS" -eq 0 ]; then
   echo "Result is empty. No more songs."
   exit 0
 fi
-DATE=$(echo "$DATA" | jq -r '.items[0].publishDate')
+DATE=$(date -u +%Y-%m-%dT00:00:00Z)
 echo "DATE: $DATE"
-echo "{\"lastDate\": \"$DATE\"}" > var.json
+echo "{\"lastDate\": \"$DATE\"}" > dates/${ARTIST}var.json
 # looping the api to get all songs we need.
 while true; do
     CURLURL="https://vocadb.net/api/songs?songTypes=Original&afterDate=${AFTERDATE}&&artistId%5B%5D=${ARTIST}&childVoicebanks=${CHILDREN}&onlyWithPvs=true&status=Finished&start=${START}&maxResults=${RESULTS}&sort=PublishDate&fields=PVs"
@@ -51,8 +51,8 @@ while true; do
           echo "$url"
           echo ""
           echo "▼・ᴗ・▼"
-          echo "%"
-      done >> fortunes/tetosotd/tetofortunes
+          echo "\`"
+      done >> vocafortunes/vocadb/$ARTIST
       if [ "$START" -ge "$MAX" ]; then
         echo "Reached max results. Stopping."
         break
@@ -60,9 +60,42 @@ while true; do
       echo "Done!"
     fi
 done
+
+readarray -d '`' tetosongs < vocafortunes/vocadb/$ARTIST
+
+readarray -td '' dups < <(
+  (( ${#tetosongs[@]} == 0 )) ||
+    printf '%s\0' "${tetosongs[@]}" |
+      LC_ALL=C sort -z |
+      LC_ALL=C uniq -zd
+)
+readarray -td '' uniq < <(
+  (( ${#tetosongs[@]} == 0 )) ||
+    printf '%s\0' "${tetosongs[@]}" |
+      LC_ALL=C sort -z |
+      LC_ALL=C uniq -zu
+)
+
+echo ${#tetosongs[@]}
+if ((${#dups[@]} > 0)); then
+  echo >&2 "array has duplicates:"
+  echo ${#dups[@]}
+fi
+if ((${#uniq[@]} > 0)); then
+  echo >&2 "Uniques:"
+  echo ${#uniq[@]}
+fi
+
+printf >&2 '%s' "${dups[@]}" > dups
+printf >&2 '%s' "${uniq[@]}" > uniq
+
+cat uniq > fixed
+cat dups >> fixed
+sed -i '1,/^TETO SONG OF THE DAY!/{/^TETO SONG OF THE DAY!$/!d}' fixed
+rm vocafortunes/vocadb/$ARTIST
+rm uniq dups
+mv fixed vocafortunes/vocadb/$ARTIST
 # create the fortune database from tetofortunes
-rm fortunes/tetosotd/tetofortunes.dat # delete the old database if it extists.
-strfile -c % fortunes/tetosotd/tetofortunes fortunes/tetosotd/tetofortunes.dat
-git add fortunes/tetosotd/tetofortunes fortunes/tetosotd/tetofortunes.dat var.json
+git add vocafortunes/vocadb/$ARTIST dates/${ARTIST}var.json
 git commit -m "Update fortune files"
 git push -u origin main
