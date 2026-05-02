@@ -55,7 +55,7 @@ fi
 echo "writing tetosong to ~/.local/bin"
 mkdir -p ~/.local/bin
 curl -sLo ~/.local/bin/tetosong https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/tetosong
-curl -sLo ~/.local/bin/tetosong https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/vocafortune
+curl -sLo ~/.local/bin/vocafortune https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/vocafortune
 chmod +x ~/.local/bin/tetosong
 chmod +x ~/.local/bin/vocafortune
 echo "Make sure ~/.local/bin is in your PATH and you can get your Teto Song Of the Day by typing in tetosong or adding it to your bashrc :)"
