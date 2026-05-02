@@ -96,8 +96,6 @@ rm vocafortunes/vocadb/$ARTIST
 rm uniq dups
 mv fixed vocafortunes/vocadb/$ARTIST
 # create the fortune database from tetofortunes
-rm fortunes/tetosotd/tetofortunes.dat # delete the old database if it extists.
-strfile -c % fortunes/tetosotd/tetofortunes fortunes/tetosotd/tetofortunes.dat
-git add fortunes/tetosotd/tetofortunes fortunes/tetosotd/tetofortunes.dat var.json
+git add vocafortunes/vocadb/$ARTIST dates/${ARTIST}var.json
 git commit -m "Update fortune files"
 git push -u origin main
