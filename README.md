@@ -1,6 +1,6 @@
 # **Kasane Teto in Your Terminal!**
 ## **Find songs nobody knows exist!** 
-A small wrapper and custom list for fortune/misfortune that picks a random Teto song of the day from any of almost 28,000 original, finished songs with videos on VocaDB.  Your original fortune command will remain untouched, tetosong just tells it to use a custom directory.
+A small fortune type script that picks a random Teto song of the day from any of over 28,000 original, finished songs with videos on VocaDB. 
 
 ## **Enable Audio to Hear "Teto Song of the Day!" in your terminal from Utau, SynthV, or SynthV2 Teto!**
 Sound plays based on the song you get!  Utau for Utau! SV for SV!
@@ -12,15 +12,11 @@ Disabled by default, opt-in during setup to enable a systemd user service and ti
 
 
 ## **Dependencies**
-
+NO LONGER REQUIRES FORTUNE
 ### install.sh and tetosong
-fortune/fortune-mod or misfortune 
-
 ffmpeg -optional for speaking Teto
 
 ### makefortune.sh
-fortune/fortune-mod (for strfile)
-
 jq
 
 ## *Install and Run*
