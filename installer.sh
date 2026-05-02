@@ -9,12 +9,12 @@
 echo "Downloading custom fortunes and config file..."
 # download the config file and prompt the user for options.
 mkdir -p ~/.local/share/tetosong
-curl -sLo ~/.local/share/tetosong/tetosong.config https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/tetosong.config
+curl -sLo ~/.local/share/tetosong/tetosong.config https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetosong.config
 read -p "Do you want to hear Teto in your terminal? (y/n) " yn
 case $yn in
     [Yy]* )
     sed -i 's|^AUDIO=.*|AUDIO="YES"|' ~/.local/share/tetosong/tetosong.config
-    curl -sLo /tmp/SOTD.zip https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/audio/teto/SOTD.zip
+    curl -sLo /tmp/SOTD.zip https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/audio/teto/SOTD.zip
     mkdir -p ~/.local/share/tetosong/audio/
     mkdir -p ~/.local/share/tetosong/audio/teto/
     unzip -o /tmp/SOTD.zip -d ~/.local/share/tetosong/audio/teto/
@@ -33,7 +33,7 @@ esac
 
 mkdir -p ~/.local/share/tetosong/vocafortunes
 mkdir -p ~/.local/share/tetosong/vocafortunes/vocadb
-curl -sLo ~/.local/share/tetosong/vocafortunes/vocadb/140308 https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/vocafortunes/vocadb/140308
+curl -sLo ~/.local/share/tetosong/vocafortunes/vocadb/140308 https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortunes/vocadb/140308
 
 
 # set up autoupdater
@@ -43,8 +43,8 @@ if [ "$AUTOUPDATE" = "YES" ]; then
     # write and enable systemd service file and timer user services
     echo "Autoupdater enabled, updating service..."
     mkdir -p ~/.config/systemd/user
-    curl -sLo ~/.config/systemd/user/tetosong.service https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/autoupdater/tetosong.service
-    curl -sLo ~/.config/systemd/user/tetosong.timer https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/autoupdater/tetosong.timer
+    curl -sLo ~/.config/systemd/user/tetosong.service https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/autoupdater/tetosong.service
+    curl -sLo ~/.config/systemd/user/tetosong.timer https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/autoupdater/tetosong.timer
     systemctl --user daemon-reload
     systemctl --user enable tetosong.timer
     systemctl --user start tetosong.timer
@@ -54,8 +54,8 @@ fi
 # write tetosong to ~/.local/bin and tell the user how to use it.
 echo "writing tetosong to ~/.local/bin"
 mkdir -p ~/.local/bin
-curl -sLo ~/.local/bin/tetosong https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/tetosong
-curl -sLo ~/.local/bin/vocafortune https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/vocafortune
+curl -sLo ~/.local/bin/tetosong https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetosong
+curl -sLo ~/.local/bin/vocafortune https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortune
 chmod +x ~/.local/bin/tetosong
 chmod +x ~/.local/bin/vocafortune
 echo "Make sure ~/.local/bin is in your PATH and you can get your Teto Song Of the Day by typing in tetosong or adding it to your bashrc :)"

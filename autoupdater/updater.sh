@@ -13,10 +13,10 @@ rm -rf ~/.local/share/tetosong/fortunes/
 mkdir -p ~/.local/share/tetosong
 mkdir -p ~/.local/share/tetosong/vocafortunes
 mkdir -p ~/.local/share/tetosong/vocafortunes/vocadb
-curl -sLo ~/.local/share/tetosong/vocafortunes/vocadb/140308 https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/vocafortunes/vocadb/140308
+curl -sLo ~/.local/share/tetosong/vocafortunes/vocadb/140308 https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortunes/vocadb/140308
 AUDIO="$(. ~/.local/share/tetosong/tetosong.config; echo $AUDIO)"
 if [ "$AUDIO" = "YES" ]; then
-    curl -sLo ~/.local/share/tetosong/SOTD.zip https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/audio/teto/SOTD.zip
+    curl -sLo ~/.local/share/tetosong/SOTD.zip https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/audio/teto/SOTD.zip
     mkdir -p ~/.local/share/tetosong/audio/
     mkdir -p ~/.local/share/tetosong/audio/teto/
     unzip -o ~/.local/share/tetosong/SOTD.zip -d ~/.local/share/tetosong/audio/teto/
@@ -30,8 +30,8 @@ if [ "$AUTOUPDATE" = "YES" ]; then
     # write and enable systemd service file and timer user services
     echo "Auto-Updater enabled, updating service..."
     mkdir -p ~/.config/systemd/user
-    curl -sLo ~/.config/systemd/user/tetosong.service https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/autoupdater/tetosong.service
-    curl -sLo ~/.config/systemd/user/tetosong.timer https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/autoupdater/tetosong.timer
+    curl -sLo ~/.config/systemd/user/tetosong.service https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/autoupdater/tetosong.service
+    curl -sLo ~/.config/systemd/user/tetosong.timer https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/autoupdater/tetosong.timer
     systemctl --user daemon-reload
     systemctl --user enable tetosong.timer
     systemctl --user start tetosong.timer
@@ -41,8 +41,8 @@ fi
 # write tetosong to ~/.local/bin and tell the user how to use it.
 echo "writing tetosong to ~/.local/bin"
 mkdir -p ~/.local/bin
-curl -sLo ~/.local/bin/tetosong https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/tetosong
-curl -sLo ~/.local/bin/tetosong https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/vocafortune
+curl -sLo ~/.local/bin/tetosong https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetosong
+curl -sLo ~/.local/bin/tetosong https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortune
 chmod +x ~/.local/bin/tetosong
 chmod +x ~/.local/bin/vocafortune
 echo "Make sure ~/.local/bin is in your PATH and you can get your Teto Song Of the Day by typing in tetosong or adding it to your bashrc :)"
