@@ -32,6 +32,7 @@ case $yn in
 esac
 
 mkdir -p ~/.local/share/tetosong/vocafortunes
+mkdir -p ~/.local/share/tetosong/vocafortunes/vocadb
 curl -sLo ~/.local/share/tetosong/vocafortunes/vocadb/140308 https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/testing/fortunes/vocafortunes/140308
 
 
