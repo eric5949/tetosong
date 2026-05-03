@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-#  VOCAFORTUNE! Make tetosong not need fortune anymore!
+#  VOCAFORTUNE! Make tetosong not need fortune anymore!  Updated 5-2-26 allow using a specific file instead of a directory.
 while [ $# -gt 0 ]; do export "${1#-}"="$2"; shift 2; done # now it can be -l ./vocafortunes like a proper program!!!! #  argument handling  # i can use this anywhere!!!!!!! save this you!!!!!!
 #fortune script
 shopt -s globstar
-if [ -z "$l" ]; then export "DIR"="$HOME/.local/share/tetosong/vocafortunes/**"; else export "DIR"="$l/**"; fi
-for file in $DIR; do if [[ -f "$file" ]]; then readarray -td '`' temp < "$file"; array+=("${temp[@]}"); fi; done
+if [ -z "$f" ]; then if [ -z "$l" ]; then export "DIR"="$HOME/.local/share/tetosong/vocafortunes/**"; else export "DIR"="$l/**"; fi; else export "FILE"="$f"; fi
+if [ -z "$FILE" ]; then for file in $DIR; do if [[ -f "$file" ]]; then readarray -td '`' temp < "$file"; array+=("${temp[@]}"); fi; done
+else if [[ -f "$FILE" ]]; then readarray -td '`' temp < "$FILE"; array+=("${temp[@]}"); fi; fi
 export "ITEMS"="${#array[@]}"
 export "CHOICE"="$(shuf -i 1-$ITEMS -n 1)"
 echo "${array[$CHOICE]}"

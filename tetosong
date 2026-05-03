@@ -1,52 +1,61 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #
 #   Updated 5-1-26 to use new vocafortune script and not require fortune/misfortune.
+#   Updated 5-2-26 to add Miku and Gumi presets and shorten what i can just to see if i could.
 #
-#
-
 # argument handling
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        	-u|--update)
-        		echo "Downloading tetosong updater..."
-        		bash <(curl -s https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/autoupdater/updater.sh)
-        		shift
-        		exit 0
-        		;;
-        -h|--help)
-            echo "--- TETOSONG HELP ---"
-            echo ""
-            echo " -h | display this message"
-            echo " -u | update script and fortunes"
-            echo ""
-            shift
-            exit 0
-            ;;
-        *)
-            break
-            ;;
-    esac
-done
-
-# check if the config file exists, if not download it
-if [ ! -f ~/.local/share/tetosong/tetosong.config ]; then
-	echo "Config file not found, downloading default..."
+while [[ $# -gt 0 ]]; do case $1 in
+        -u|--update) echo "Downloading tetosong updater..." && bash <(curl -s https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/autoupdater/updater.sh) && exit 0 ;; # update tetosong
+        -h|--help) echo -e "   --- TETOSONG HELP ---\n -h | display this message \n -u | update script and fortunes \n -p SINGER | set singer preset (Teto, Gumi)"; exit 0 ;; # tetosong help
+        *) break ;;
+esac done
+while [ $# -gt 0 ]; do export "${1#-}"="$2"; shift 2; done # additional argument handling
+if [ -z "$p" ]; then export preset="Teto"; else export preset="$p"; fi # option for presetting singer preset
+if [ ! -f ~/.local/share/tetosong/tetosong.config ]; then echo "Config file not found, downloading default..." # check if the config file exists, if not download it
 	curl -sLo ~/.local/share/tetosong/tetosong.config https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetosong.config
 fi
 # check if the user wants to play audio
 AUDIO="$(. ~/.local/share/tetosong/tetosong.config; echo $AUDIO)"
-
-vocafortune >> /tmp/fortune
-if [ "$AUDIO" = "YES" ]; then
-    if grep -q "SV2" /tmp/fortune; then
-        nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/sv2SOTD.wav 2>/dev/null >/dev/null &
-    elif grep -q "SV" /tmp/fortune; then
-        nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/svSOTD.wav 2>/dev/null >/dev/null &
-    elif grep -q "重音テト" /tmp/fortune; then
-        nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/utSOTD.wav 2>/dev/null >/dev/null &
-    else
-        nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/sv2SOTD.wav 2>/dev/null >/dev/null &
+# run based on preset
+if [ "$preset" = "Teto" ]; then vocafortune -f "$HOME/.local/share/tetosong/vocafortunes/vocadb/140308" >> /tmp/fortune # Teto Preset, the default
+    if [ "$AUDIO" = "YES" ]; then
+        if grep -q "SV2" /tmp/fortune; then nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/sv2SOTD.wav 2>/dev/null >/dev/null &
+        elif grep -q "SV" /tmp/fortune; then nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/svSOTD.wav 2>/dev/null >/dev/null &
+        elif grep -q "重音テト" /tmp/fortune; then nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/utSOTD.wav 2>/dev/null >/dev/null &
+        else nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/sv2SOTD.wav 2>/dev/null >/dev/null & fi
+    fi
+elif [ "$preset" = "Miku" ]; then if [ ! -f ~/.local/share/tetosong/vocafortunes/vocadb/1 ]; then echo "Miku not found, downloading..." # Miku Preset (check if her songs are installed then install if not)
+        cat << 'EOF' > $HOME/.local/bin/mikusong
+#!/usr/bin/env bash
+tetosong -p Miku
+exit 0
+EOF
+    chmod +x $HOME/.local/bin/mikusong
+    curl -sLo ~/.local/share/tetosong/vocafortunes/vocadb/1 https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortunes/vocadb/1    # this doesnt actually exist yet.
+    if [ "$AUDIO" = "YES" ]; then curl -sLo ~/.local/share/tetosong/audio/miku/v6SOTD.wav https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/audio/miku/v6SOTD.wav; fi
+    fi
+    vocafortune -f "$HOME/.local/share/tetosong/vocafortunes/vocadb/1" >> /tmp/fortune
+    if [ "$AUDIO" = "YES" ]; then if grep -q "MIKU" /tmp/fortune; then nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/miku/v6SOTD.wav 2>/dev/null >/dev/null & fi fi
+elif [ "$preset" = "Gumi" ]; then if [ ! -f ~/.local/share/tetosong/vocafortunes/vocadb/3 ]; then echo "Gumi not found, downloading..." # Gumi Preset (check if her songs are installed then install if not)
+    cat << 'EOF' > $HOME/.local/bin/gumisong
+#!/usr/bin/env bash
+tetosong -p Gumi
+exit 0
+EOF
+    chmod +x $HOME/.local/bin/gumisong
+    curl -sLo ~/.local/share/tetosong/vocafortunes/vocadb/3 https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortunes/vocadb/3
+    if [ "$AUDIO" = "YES" ]; then curl -sLo ~/.local/share/tetosong/audio/gumi/sv2SOTD.wav https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/audio/gumi/sv2SOTD.wav; fi
+    fi
+    vocafortune -f "$HOME/.local/share/tetosong/vocafortunes/vocadb/3" >> /tmp/fortune
+    if [ "$AUDIO" = "YES" ]; then if grep -q "GUMI" /tmp/fortune; then nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/gumi/sv2SOTD.wav 2>/dev/null >/dev/null & fi fi
+elif [ "$preset" = "all" ]; then # All Preset, pick from any of the avaailable presets. at some point i'll probably make this just pick a random preset instead of making it every preset in one.  would get wild if i added a few more voices.
+    vocafortune -l "$HOME/.local/share/tetosong/vocafortunes/" >> /tmp/fortune
+    if [ "$AUDIO" = "YES" ]; then
+        if grep -q "SV2" /tmp/fortune; then nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/sv2SOTD.wav 2>/dev/null >/dev/null &
+        elif grep -q "SV" /tmp/fortune; then nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/svSOTD.wav 2>/dev/null >/dev/null &
+        elif grep -q "重音テト" /tmp/fortune; then nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/teto/utSOTD.wav 2>/dev/null >/dev/null &
+        elif grep -q "MIKU" /tmp/fortune; then nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/miku/v6SOTD.wav 2>/dev/null >/dev/null &
+        elif grep -q "GUMI" /tmp/fortune; then nohup ffplay -nodisp -autoexit -v quiet ~/.local/share/tetosong/audio/gumi/sv2SOTD.wav 2>/dev/null >/dev/null & fi
     fi
 fi
-    cat /tmp/fortune
-    rm /tmp/fortune
+cat /tmp/fortune && rm /tmp/fortune
