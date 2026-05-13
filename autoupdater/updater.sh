@@ -6,7 +6,9 @@
 # download custom fortunes and config file
 echo "Updating tetosong..."
 # check if the config file exists, if not download it and prompt the user for options.
-
+if [ ! -f ~/.local/share/tetosong/tetosong.config ]; then echo "Config file not found, downloading default..." # check if the config file exists, if not download it
+	curl -sLo ~/.local/share/tetosong/tetosong.config https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/tetosong.config
+fi
 #### remove files from old version
 rm -rf ~/.local/share/tetosong/fortunes/
 # add new files
@@ -14,6 +16,9 @@ mkdir -p ~/.local/share/tetosong
 mkdir -p ~/.local/share/tetosong/vocafortunes
 mkdir -p ~/.local/share/tetosong/vocafortunes/vocadb
 curl -sLo ~/.local/share/tetosong/vocafortunes/vocadb/140308 https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortunes/vocadb/140308
+if [ -f ~/.local/share/tetosong/vocafortunes/vocadb/3 ]; then echo "Gumi found, updating Gumi songs..." # update Gumi
+	curl -sLo ~/.local/share/tetosong/tetosong.config https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortunes/vocadb/3
+fi
 AUDIO="$(. ~/.local/share/tetosong/tetosong.config; echo $AUDIO)"
 if [ "$AUDIO" = "YES" ]; then
     curl -sLo ~/.local/share/tetosong/SOTD.zip https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/audio/teto/SOTD.zip

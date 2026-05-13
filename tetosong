@@ -3,7 +3,7 @@
 #   Updated 5-1-26 to use new vocafortune script and not require fortune/misfortune.
 #   Updated 5-2-26 to add Miku and Gumi presets and shorten what i can just to see if i could.
 #
-# argument handling
+# argument handling        #################   NEED TO UPDATE HELP
 while [[ $# -gt 0 ]]; do case $1 in
         -u|--update) echo "Downloading tetosong updater..." && bash <(curl -s https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/autoupdater/updater.sh) && exit 0 ;; # update tetosong
         -h|--help) echo -e "   --- TETOSONG HELP ---\n -h | display this message \n -u | update script and fortunes \n -p SINGER | set singer preset (Teto, Gumi)"; exit 0 ;; # tetosong help

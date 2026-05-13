@@ -1,0 +1,37 @@
+tetosong has the following options:
+
+-u : Update Tetosong
+-h : display a help message
+-p : set a singer prest.  Currently supports:
+    - Teto (the default preset)
+    - Gumi
+    - Miku (limited songs rn)
+
+########################################
+
+makefortune.sh has the following options:
+
+-s : Define singer based on vocadb artistid (1 for Miku, 3 For Gumi, 14308 for Teto, etc.)
+-a : Define ascii/emoji art
+-n : Define singer name in caps (TETO, GUMI, MIKU, etc)
+-p : Preset option choice.  Currently supports:
+    - Teto
+    - Gumi
+    - Miku
+
+########################################
+
+vocafortune has the following options:
+
+-l : specify the directory vocafortune should look for fortunes
+-f : specify a file for vocafortune to read
+
+Vocafortune does not technically need to be used just for vocaloid songs.
+It works similar to a fortune program in that it reads a text file with a delimiter and then returns an entry from that text file.  Forune uses %, I use backtick (`) because many more vocaloid songs use % in the title than do backtick. Because there are *some* songs that do use the backtick, it's not a 100% perfect solution, but literally every character I could find to use as a delimeter is used in vocaloid song names
+
+########################################
+
+tetosong.config supports the following options at this time:
+
+AUDIO : tells tetosong if it should play audio or not.  Default on.
+AUTOUPDATE : tells the installer/updater whether to install and enable systemd user service.  Default off.

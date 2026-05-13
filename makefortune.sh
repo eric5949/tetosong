@@ -16,7 +16,6 @@ echo "vsynth: $vsynth"
 echo "ARTIST: $ARTIST"
 echo "ART: $ART"
 
-#ARTIST=140308 # 116 is Kasane Teto
 CHILDREN="true" # If we want child voicebanks, we do so we can get all songs from utau, sv, and sv2
 START=0 # Start at the beginning of the recordset. if i wanted to make the file in chunks to use the api less i would use this and max to get the songs in chunks.  They say dont use it "thousands of times a day", getting every teto song is 280 times. I think I'm ok.  maybe.
 RESULTS=100 # Max results. Limit is 100.
@@ -25,9 +24,8 @@ if [ ! -f dates/${ARTIST}var.json ]; then # var.json has our latest date, we use
     echo '{"lastDate": "2000-04-21T00:00:00Z"}' > dates/${ARTIST}var.json #  if it doesn't exist, we create it with a default date back in 2000.
 fi
 PREVDATE=$(jq -r '.lastDate' dates/${ARTIST}var.json)
-AFTERDATE=$(date -u -d "$PREVDATE + 1 Second" +"%Y-%m-%dT%H:%M:%SZ")
+AFTERDATE=$(date -u -d "$PREVDATE -1 Day" +"%Y-%m-%dT%H:%M:%SZ") # i made it so it can process duplicate songs, and that does seem to actually work, so i moved the fetch time back a day just to make sure we dont miss songs when we update.
 echo "Result: $AFTERDATE"
-#rm tetofortunes var.json tetofortunes.dat # during testing we will remove everything, or if we want to regenerate the fortune file from scratch.
 # setting the latest date.  just pulling the latest song from the api and setting the createDate as the latest date in var.json for use when we update the fortune file again, dont want to add the same songs twice. idk how I'll handle broken links and such, maybe just regenerate the whole thing periodically.
 CURLURL="https://vocadb.net/api/songs?songTypes=Original&afterDate=${AFTERDATE}&&artistId%5B%5D=${ARTIST}&childVoicebanks=${CHILDREN}&onlyWithPvs=true&status=Finished&start=0&maxResults=1&sort=PublishDate&fields=PVs"
 echo "CURLURL: $CURLURL"
