@@ -6,7 +6,7 @@
 # argument handling        #################   NEED TO UPDATE HELP
 while [[ $# -gt 0 ]]; do case $1 in
         -u|--update) echo "Downloading tetosong updater..." && bash <(curl -s https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/autoupdater/updater.sh) && exit 0 ;; # update tetosong
-        -h|--help) echo -e "   --- TETOSONG HELP ---\n -h | display this message \n -u | update script and fortunes \n -p SINGER | set singer preset (Teto, Gumi)"; exit 0 ;; # tetosong help
+        -h|--help) echo -e "   --- TETOSONG HELP ---\n -h | display this message \n -u | update script and fortunes \n -p SINGER | set singer preset \n    Running a preset will download and install songs for the selected singer and add a command to ~/.local/bin for that singer \n     Current presets and commands following installation: \n     Teto: tetosong \n     Miku: mikusong (song list incomplete) \n     Gumi: gumisong"; exit 0 ;; # tetosong help
         *) break ;;
 esac done
 while [ $# -gt 0 ]; do export "${1#-}"="$2"; shift 2; done # additional argument handling
@@ -31,7 +31,8 @@ tetosong -p Miku
 exit 0
 EOF
     chmod +x $HOME/.local/bin/mikusong
-    curl -sLo ~/.local/share/tetosong/vocafortunes/vocadb/1 https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortunes/vocadb/1    # this doesnt actually exist yet.
+    mkdir -p $HOME/.local/share/tetosong/audio/miku
+    curl -sLo ~/.local/share/tetosong/vocafortunes/vocadb/1 https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortunes/vocadb/1    # pull miku songs, not complete but theres around 600 or so.
     if [ "$AUDIO" = "YES" ]; then curl -sLo ~/.local/share/tetosong/audio/miku/v6SOTD.wav https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/audio/miku/v6SOTD.wav; fi
     fi
     vocafortune -f "$HOME/.local/share/tetosong/vocafortunes/vocadb/1" >> /tmp/fortune
@@ -43,6 +44,7 @@ tetosong -p Gumi
 exit 0
 EOF
     chmod +x $HOME/.local/bin/gumisong
+    mkdir -p $HOME/.local/share/tetosong/audio/gumi
     curl -sLo ~/.local/share/tetosong/vocafortunes/vocadb/3 https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/vocafortunes/vocadb/3
     if [ "$AUDIO" = "YES" ]; then curl -sLo ~/.local/share/tetosong/audio/gumi/sv2SOTD.wav https://raw.githubusercontent.com/eric5949/tetosong/refs/heads/main/audio/gumi/sv2SOTD.wav; fi
     fi
