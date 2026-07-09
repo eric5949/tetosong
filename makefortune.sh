@@ -29,7 +29,7 @@ echo "Result: $AFTERDATE"
 # setting the latest date.  just pulling the latest song from the api and setting the createDate as the latest date in var.json for use when we update the fortune file again, dont want to add the same songs twice. idk how I'll handle broken links and such, maybe just regenerate the whole thing periodically.
 CURLURL="https://vocadb.net/api/songs?songTypes=Original&afterDate=${AFTERDATE}&&artistId%5B%5D=${ARTIST}&childVoicebanks=${CHILDREN}&onlyWithPvs=true&status=Finished&start=0&maxResults=1&sort=PublishDate&fields=PVs"
 echo "CURLURL: $CURLURL"
-DATA=$(curl -X 'GET' $CURLURL -H 'accept: application/json')
+DATA=$(curl -X 'GET' "$CURLURL" -H 'accept: application/json')
 # making sure there are songs to add.
 SONGS=$(echo "$DATA" | jq -c '.items | length')
 if [ "$SONGS" -eq 0 ]; then echo "Result is empty. No more songs."; exit 0; fi
